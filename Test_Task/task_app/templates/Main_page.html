@@ -1,0 +1,253 @@
+<html>
+{% load static from staticfiles %}
+<link href="{% static 'Content/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'Content/tree-control.css' %}" rel="stylesheet">
+<link href="{% static 'Content/angular-material.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="{% static 'Content/mainContent.css' %}?t={{tvalue}}" rel="stylesheet">
+<link href="{% static 'Content/menu.css' %}?t={{tvalue}}" rel="stylesheet">
+<script src="{% static 'Scripts/Common/common.js' %}?t={{tvalue}}"></script>
+<script src="{% static 'Scripts/Common/message.js' %}"></script>
+<script src="{% static 'Scripts/Core/jquery-1.12.4.min.js' %}"></script>
+<link href="{% static 'Content/jquery.toast.css' %}" rel="stylesheet">
+<script src="{% static 'Scripts/Common/jquery.toast.js' %}"></script>
+<!--<script src="{% static 'Scripts/Core/angular.min.js' %}" ></script>-->
+<script src="{% static 'Scripts/Core/bootstrap.min.js' %}"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+<script src="{% static 'Scripts/Core/ui-bootstrap-tpls-2.5.0.min.js' %}"></script>
+<body oncontextmenu="return false" style="background-color:rgba(219, 239, 220, 0.95)">
+{% verbatim %}
+<div class="container-fluid">
+    <div class="maincontent">
+        <div class="container container1" ng-app="myApp1" class="container" ng-controller="myCtrl">
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div ng-form="mainform">
+                        <div class="col-md-3">
+
+                            <md-input-container class="md-block inputcontainer">
+                                <label>Credit Card Number</label>
+                                <input  numbers-only minlength="12" maxlength="12"
+                                       ng-model="mepadd.credit_Card_num" required>
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-3">
+                            <md-input-container class="md-block inputcontainer">
+                                <label>Card Holder</label>
+                                <input type="text" no-Special-Char maxlength="256" ng-model="mepadd.card_holder"
+                                       required>
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-3">
+                            <md-input-container class="md-block inputcontainer">
+                                <label>Expiration Date</label>
+                                <md-datepicker md-hide-icons="calendar" md-max-date="maxDate" md-min-date="from_date"
+                                               md-open-on-focus ng-model="expiry_date"></md-datepicker>
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-3">
+                            <md-input-container class="md-block inputcontainer">
+                                <label>Security Code</label>
+                                <input type="text" maxlength="3" ng-model="mepadd.Security_code">
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-3">
+
+                            <md-input-container class="md-block inputcontainer">
+                                <label>Amount</label>
+                                <input numbers-only maxlength="12" ng-model="mepadd.Amount" required>
+                            </md-input-container>
+
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="margin-top:13px">
+                        <input type="submit" value="Submit" class="btn btn-primary"
+                               ng-disabled="mainform.$invalid" ng-click="mainform.$valid && submit_clk(mepadd)"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <br>
+            </div>
+
+
+            <div class="row table-responsive">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <form name="demoForm">
+                        <table class="table table-striped table-bordered table-condensed table-hover md-primary">
+                            <thead class="header" style="background-color:#808080">
+                            <tr>
+                                <th>S.No</th>
+                                <th>Card Holder Name</th>
+                                <th>Credit Card Number</th>
+                                <th>Expiry Date</th>
+                                <th>Amount</th>
+                                <th>Payment Gateway</th>
+                            </tr>
+                            </thead>
+                            <tr ng-repeat="x in maintab.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                                <td align="center">{{((currentPage-1)*itemsPerPage)+$index+1}}</td>
+                                <td align="center" style="width:20%"> {{ x.credit_cardholdername }}</td>
+                                <td align="center" style="width:20%">{{ x.credit_cardnumber }}</td>
+                                <td style="width:20%" align="center">{{ x.credit_expirydate |date:'dd-MMM-y'}}</td>
+                                <td style="width:20%" align="center">{{ x.credit_amount }}</td>
+                                <td style="width:20%" align="center">{{ x.credit_gateway}}</td>
+                            </tr>
+                            <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <ul boundary-links="true" class="pagination-sm cust_pagination"
+                                        items-per-page="itemsPerPage" max-size="maxSize"
+                                        ng-model="currentPage" total-items="maintab.length"
+                                        uib-pagination></ul>
+                                </td>
+                                <td colspan="1">
+                                    Total Count:{{maintab.length}}
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endverbatim %}
+<script>
+    var myApp = angular.module('myApp1', ['ngMaterial', 'ui.bootstrap', 'ngMessages'])
+        .config(function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        });
+
+myApp.run(function($mdDateLocale, $filter) {
+    $mdDateLocale.formatDate = function(date) {
+        return $filter('date')(date, "dd-MMM-yyyy");
+    };
+})
+    myApp.directive('numbersOnly', function(){
+   return {
+     require: 'ngModel',
+     link: function(scope, element, attrs, modelCtrl) {
+       modelCtrl.$parsers.push(function (inputValue) {
+           // this next if is necessary for when using ng-required on your input.
+           // In such cases, when a letter is typed first, this parser will be called
+           // again, and the 2nd time, the value will be undefined
+           if (inputValue == undefined) return ''
+           var transformedInput = inputValue.replace(/^[^1-9]*|[^0-9]/g, '');
+           if (transformedInput!=inputValue) {
+              modelCtrl.$setViewValue(transformedInput);
+              modelCtrl.$render();
+           }
+
+           return transformedInput;
+       });
+     }
+   };
+});
+
+
+myApp.controller('myCtrl', ['$scope', 'testService', '$mdDialog', '$rootScope', '$window', '$filter', '$element',
+    function($scope, testService, $mdDialog, $rootScope, $window, $filter, $element) {
+        $element.find('input').on('keydown', function(ev) {
+            ev.stopPropagation();
+        });
+
+        $scope.currentPage = 1;
+        $scope.maxSize = 3;
+        $scope.itemsPerPage = 10;
+
+
+        var detail = JSON.parse(sessionStorage.getItem('today'));
+        $scope.name = detail.Emp_name;
+        $scope.gid = detail.Emp_id;
+        if (detail == null) {
+            $window.location.href = "http://127.0.0.1:8001/";
+        }
+        Emp_id = detail.Emp_id;
+        if (Emp_id > 0) {
+            loaddata();
+
+            function loaddata() {
+                var data = {
+                    "Params": {
+                        "Action": "Order_Get"
+                    }
+                }
+                var get_purchase = testService.gettabledata(data)
+                get_purchase.then(function(result) {
+                    if (result.data.MESSAGE == 'FOUND') {
+                        $scope.maintab = result.data.DATA;
+                    }
+                    else{
+                    alert(err);
+                    }
+                }).finally($scope.endloading);
+            }
+
+            $scope.from_date = new Date();
+            $scope.submit_clk = function(e) {
+            var data = {
+                "Params": {
+                "credit_cardnumber": e.credit_Card_num,
+                "credit_cardholdername":e.card_holder,
+                "credit_expirydate": $filter('date')($scope.expiry_date,"yyyy-MM-dd"),
+                "credit_securitycode":e.Security_code,
+                "credit_amount":e.Amount
+                }
+            }
+            var details = {
+                Action: 'INSERT',
+                data: data,
+            }
+            var get_data = testService.settabledata(details)
+            get_data.then(function(result) {
+            if(result.data == "200"){
+            alert("Payment is Processed");
+            loaddata();
+            }else if (result.data == "400"){
+            alert('Request is Invalid')
+            }
+            else if (result.data == "500"){
+            alert('Server Error')
+            }
+            }),
+            function(err) {
+                alert('no data');
+            }.finally($scope.endloading());
+        }
+
+
+        } else {
+
+            $window.location.href = "http://127.0.0.1:8001/";
+        }
+    }
+]);
+
+myApp.service("testService", function($http) {
+
+    this.gettabledata = function(data) {
+        var response = $http.post("/filesmryget/", data);
+        return response;
+    }
+        this.settabledata = function(data) {
+        var response = $http.post("/submit_fun/", data);
+        return response;
+    }
+
+});
+
+
+</script>
+</body>
+</html>
